@@ -4,7 +4,7 @@ from telegram.ext import (
     CallbackQueryHandler
 )
 from config import BOT_TOKEN
-from database.init_db import init_db
+from utils.database.db import init_db
 from handlers.pedido import pedido
 from handlers.callbacks import botones
 
