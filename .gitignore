@@ -1,4 +1,2 @@
-.env
-config.py
-*.db
-__pycache__/
+discord.py
+python-dotenv
