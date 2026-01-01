@@ -1,5 +1,5 @@
 
-from database.db import get_connection
+from utils.database.db import get_connection
 
 def crear_pedido(chat_id):
     conn = get_connection()
