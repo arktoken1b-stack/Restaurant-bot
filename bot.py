@@ -1,20 +1,23 @@
-import os
-import discord
-from discord.ext import commands
-from discord import app_commands
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    CallbackQueryHandler
+)
+from config import BOT_TOKEN
 from database.init_db import init_db
+from handlers.pedido import pedido
+from handlers.callbacks import botones
 
-intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="!", intents=intents)
-
-@bot.event
-async def on_ready():
+def main():
     init_db()
-    # Sincronizar comandos de barra
-    await bot.tree.sync()
-    print(f"Bot conectado como {bot.user}")
 
-# Cargar cog de pedidos
-bot.load_extension("commands.pedido")
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-bot.run(os.getenv("DISCORD_TOKEN"))
+    app.add_handler(CommandHandler("pedido", pedido))
+    app.add_handler(CallbackQueryHandler(botones))
+
+    print("🤖 Bot iniciado correctamente")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
