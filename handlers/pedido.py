@@ -1,10 +1,12 @@
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from models.pedido_model import crear_pedido
 
 async def pedido(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    pedido_id = crear_pedido(update.effective_chat.id)
+    chat_id = update.effective_chat.id
+
+    # Crear pedido en la BD
+    pedido_id = crear_pedido(chat_id)
 
     keyboard = [
         [InlineKeyboardButton("🍗 Pollo", callback_data=f"plato_pollo_{pedido_id}")],
