@@ -1,7 +1,4 @@
+.env
 __pycache__/
 *.pyc
-.env
 venv/
-*.log
-config.py
-*.db
