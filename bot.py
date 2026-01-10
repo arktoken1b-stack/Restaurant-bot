@@ -1,23 +1,28 @@
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    CallbackQueryHandler
-)
-from config import BOT_TOKEN
-from utils.database.db import init_db
-from handlers.pedido import pedido
-from handlers.callbacks import botones
+import discord
+from discord.ext import commands
+import os
 
-def main():
-    init_db()
+intents = discord.Intents.default()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+@bot.event
+async def on_ready():
+    print(f"✅ Bot listo como {bot.user}")
 
-    app.add_handler(CommandHandler("pedido", pedido))
-    app.add_handler(CallbackQueryHandler(botones))
+# Cargar cogs
+initial_extensions = [
+    "cogs.admin.add_food",
+    "cogs.admin.add_soda",
+    "cogs.admin.add_extra",
+    "cogs.admin.edit_command",
+    "cogs.orders.new_order",
+    "cogs.orders.view_orders"
+]
 
-    print("🤖 Bot iniciado correctamente")
-    app.run_polling()
+for ext in initial_extensions:
+    try:
+        bot.load_extension(ext)
+    except Exception as e:
+        print(f"❌ Error cargando {ext}: {e}")
 
-if __name__ == "__main__":
-    main()
+bot.run(os.getenv("DISCORD_TOKEN"))
